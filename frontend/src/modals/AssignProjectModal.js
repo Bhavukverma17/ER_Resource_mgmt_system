@@ -14,14 +14,10 @@ const AssignProjectModal = ({ onClose }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const projectRes = await axios.get(
-          `${API_BASE_URL}/api/projects`
-        );
+        const projectRes = await axios.get(`${API_BASE_URL}/api/projects`);
         setProjects(projectRes.data);
 
-        const engineerRes = await axios.get(
-          `${API_BASE_URL}/api/engineers`
-        );
+        const engineerRes = await axios.get(`${API_BASE_URL}/api/engineers`);
         const unassignedEngineers = engineerRes.data.filter(
           (eng) => !eng.project_assigned || eng.project_assigned === "None"
         );
@@ -52,12 +48,9 @@ const AssignProjectModal = ({ onClose }) => {
     setError("");
 
     try {
-      const response = await axios.put(
-        `${API_BASE_URL}/api/assign/${selectedEngineer._id}`,
-        {
-          projectId: selectedProject._id,
-        }
-      );
+      await axios.put(`${API_BASE_URL}/api/assign/${selectedEngineer._id}`, {
+        projectId: selectedProject._id,
+      });
 
       alert("✅ Project assigned successfully!");
       onClose();

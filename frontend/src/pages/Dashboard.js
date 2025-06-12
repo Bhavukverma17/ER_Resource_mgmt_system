@@ -6,7 +6,6 @@ import UnassignProjectModal from "../modals/UnassignProjectModal";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
 import { API_BASE_URL } from "../config/api";
 
 const Dashboard = () => {
@@ -60,7 +59,7 @@ const Dashboard = () => {
     };
 
     fetchEngineers();
-  }, []);
+  }, [currentUser?.email, currentUser?.role]);
 
   // For Manager: Get domains
   const getAllDomains = () => {
@@ -107,22 +106,6 @@ const Dashboard = () => {
     } catch (err) {
       console.error("Error saving assignment update:", err);
     }
-  };
-
-  // Styling
-  const cardStyle = {
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    padding: "1rem",
-    marginBottom: "1rem",
-    background: "#f9f9f9",
-    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-  };
-
-  const sectionTitle = {
-    fontSize: "20px",
-    margin: "1.5rem 0 1rem",
-    color: "#333",
   };
 
   return (
