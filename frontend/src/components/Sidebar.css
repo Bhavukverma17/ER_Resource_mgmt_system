@@ -1,0 +1,30 @@
+.app-sidebar {
+    width: 220px;
+    background: #fff0f0;
+    border-right: 1px solid #ffd2d2;
+    padding: 2rem 1rem;
+    height: 100%;
+    position: fixed;
+    top: 70px; /* adjust if header height changes */
+    left: 0;
+  }
+  
+  .app-sidebar nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .app-sidebar nav ul li {
+    margin-bottom: 1rem;
+  }
+  
+  .app-sidebar nav ul li a,
+  .app-sidebar nav ul li button {
+    text-decoration: none;
+    color: #ff4b2b;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  

@@ -1,0 +1,22 @@
+{
+  "name": "er-management-system",
+  "version": "1.0.0",
+  "description": "Full-stack Engineering Resources Management System",
+  "scripts": {
+    "install-all": "npm install && cd frontend && npm install && cd ../server && npm install",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd frontend && npm start\"",
+    "build": "cd frontend && npm run build",
+    "start": "cd server && npm start"
+  },
+  "keywords": [
+    "react",
+    "nodejs",
+    "mongodb",
+    "management-system"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

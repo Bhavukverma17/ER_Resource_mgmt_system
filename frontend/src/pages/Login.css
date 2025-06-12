@@ -1,0 +1,16 @@
+.gradient-custom-2 {
+    /* fallback for old browsers */
+    background: #1a1a1a;
+  
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, #000000, #1a1a1a, #2d2d2d, #404040);
+  
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #000000, #1a1a1a, #2d2d2d, #404040);
+  }
+  
+  @media (min-width: 768px) {
+    .gradient-form {
+      height: 100vh !important;
+    }
+  }
