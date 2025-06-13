@@ -48,8 +48,8 @@ ER_ManagementSystem/
 
 ## Live Demo
 
-- **Frontend**: [https://your-frontend-deployment.vercel.app](https://your-frontend-deployment.vercel.app)
-- **Backend API**: [https://your-backend-deployment.vercel.app](https://your-backend-deployment.vercel.app)
+- **Frontend**: [https://your-frontend-deployment.vercel.app](https://er-resource-mgmt-system-c9za.vercel.app/login)
+- **Backend API**: [https://your-backend-deployment.vercel.app](https://er-resource-mgmt-backend-l0xpcwa8h.vercel.app/)
 
 ## Local Development
 
@@ -152,6 +152,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Your Name - your.email@example.com
+Your Name - bhavukverma2001@gmail.com
 
-Project Link: [https://github.com/yourusername/ER_ManagementSystem](https://github.com/yourusername/ER_ManagementSystem)
+Project Link: [https://github.com/yourusername/ER_ManagementSystem](https://github.com/Bhavukverma17/ER_Resource_Mgmt_system)
