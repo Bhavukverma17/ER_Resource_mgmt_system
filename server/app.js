@@ -13,69 +13,37 @@ const FRONTEND_URL =
   process.env.FRONTEND_URL || "https://er-resource-mgmt-system-c9za.vercel.app";
 const NODE_ENV = process.env.NODE_ENV || "production";
 
-// CORS configuration
-const corsOptions = {
-  origin: function (origin, callback) {
-    console.log("Request origin:", origin);
-    const allowedOrigins = [FRONTEND_URL, "http://localhost:3000"];
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log("CORS blocked request from:", origin);
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "X-Requested-With",
-    "Accept",
-  ],
-  exposedHeaders: ["Content-Range", "X-Content-Range"],
-  maxAge: 86400, // 24 hours
-};
-
-// Middleware
-app.use(cors(corsOptions));
-
-// Additional headers middleware
+// Basic middleware for all requests
 app.use((req, res, next) => {
-  // Log request details
-  console.log("Request details:", {
-    method: req.method,
-    path: req.path,
-    origin: req.headers.origin,
-    headers: req.headers,
-  });
-
-  // Set CORS headers
-  res.header("Access-Control-Allow-Origin", FRONTEND_URL);
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header(
+  // Set CORS headers for all responses
+  res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL);
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader(
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization, X-Requested-With, Accept"
   );
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Max-Age", "86400");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Max-Age", "86400");
 
   // Handle preflight requests
   if (req.method === "OPTIONS") {
-    console.log("Handling preflight request");
+    console.log("Handling preflight request for:", req.path);
     return res.status(200).end();
   }
 
   next();
 });
 
+// Parse JSON bodies
 app.use(express.json());
 
 // Request logging middleware
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  console.log("Environment:", NODE_ENV);
-  console.log("Frontend URL:", FRONTEND_URL);
+  console.log("Headers:", req.headers);
   next();
 });
 
@@ -95,7 +63,7 @@ app.get("/health", (req, res) => {
     environment: NODE_ENV,
     frontendUrl: FRONTEND_URL,
     cors: {
-      allowedOrigins: [FRONTEND_URL, "http://localhost:3000"],
+      allowedOrigin: FRONTEND_URL,
       credentials: true,
     },
   });
