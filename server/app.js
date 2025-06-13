@@ -13,29 +13,24 @@ const FRONTEND_URL =
   process.env.FRONTEND_URL || "https://er-resource-mgmt-system-c9za.vercel.app";
 const NODE_ENV = process.env.NODE_ENV || "production";
 
-// Basic middleware for all requests
-app.use((req, res, next) => {
-  // Set CORS headers for all responses
-  res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL);
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, X-Requested-With, Accept"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Max-Age", "86400");
-
-  // Handle preflight requests
-  if (req.method === "OPTIONS") {
-    console.log("Handling preflight request for:", req.path);
-    return res.status(200).end();
-  }
-
-  next();
-});
+// Enable CORS for all routes
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
+    ],
+    exposedHeaders: ["Content-Range", "X-Content-Range"],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  })
+);
 
 // Parse JSON bodies
 app.use(express.json());
@@ -63,7 +58,7 @@ app.get("/health", (req, res) => {
     environment: NODE_ENV,
     frontendUrl: FRONTEND_URL,
     cors: {
-      allowedOrigin: FRONTEND_URL,
+      allowedOrigin: "*",
       credentials: true,
     },
   });
