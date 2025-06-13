@@ -8,24 +8,46 @@ const assignmentRoutes = require("./routes/assignmentRoutes");
 
 const app = express();
 
+// Environment variables with fallbacks
+const FRONTEND_URL =
+  process.env.FRONTEND_URL || "https://er-resource-mgmt-system-c9za.vercel.app";
+const NODE_ENV = process.env.NODE_ENV || "production";
+
 // CORS configuration
 const corsOptions = {
-  origin: [
-    "https://er-resource-mgmt-system-c9za.vercel.app",
-    "http://localhost:3000",
-  ],
+  origin:
+    NODE_ENV === "production"
+      ? [FRONTEND_URL]
+      : ["http://localhost:3000", FRONTEND_URL],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Content-Range", "X-Content-Range"],
+  maxAge: 86400, // 24 hours
 };
 
 // Middleware
 app.use(cors(corsOptions));
+
+// Additional headers middleware
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", FRONTEND_URL);
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 app.use(express.json());
 
 // Request logging middleware
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  console.log("Environment:", NODE_ENV);
+  console.log("Frontend URL:", FRONTEND_URL);
   next();
 });
 
@@ -42,6 +64,8 @@ app.get("/health", (req, res) => {
     status: "ok",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
+    environment: NODE_ENV,
+    frontendUrl: FRONTEND_URL,
   });
 });
 
@@ -66,6 +90,7 @@ app.use((err, req, res, next) => {
     stack: err.stack,
     path: req.path,
     method: req.method,
+    environment: NODE_ENV,
   });
 
   // Handle specific error types
@@ -87,7 +112,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({
     error: err.name || "Internal Server Error",
     message: err.message || "Something went wrong",
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+    ...(NODE_ENV === "development" && { stack: err.stack }),
   });
 });
 
@@ -95,11 +120,13 @@ app.use((err, req, res, next) => {
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection at:", promise);
   console.error("Reason:", reason);
+  console.error("Environment:", NODE_ENV);
 });
 
 // Uncaught exception handler
 process.on("uncaughtException", (error) => {
   console.error("Uncaught Exception:", error);
+  console.error("Environment:", NODE_ENV);
   process.exit(1);
 });
 
