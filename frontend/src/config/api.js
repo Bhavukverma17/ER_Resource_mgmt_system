@@ -5,7 +5,7 @@ const API_CONFIG = {
   },
   production: {
     // For Vercel deployment, the API will be served from the same domain
-    BASE_URL: process.env.REACT_APP_API_URL || "",
+    BASE_URL: "https://er-management-system-backend.vercel.app",
   },
 };
 
